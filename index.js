@@ -7,6 +7,8 @@ const express = require("express");
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const Bear = require('./app/models/bear');
+const argv = require('minimist')(process.argv.slice(2));
+
 
 const app = express();
 const port = Number(process.env.PORT || 3000);
@@ -15,6 +17,10 @@ mongoose.connect('mongodb://localhost/Tododb');
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+const swagger = require('swagger-node-express').createNew(app);
+
+app.use(express.static('dist'));
+
 
 
 /**
@@ -28,21 +34,12 @@ router.use((req, res, next) => {
     next(); // make sure we go to the next routes and don't stop here
 });
 
-// test route to make sure everything is working (accessed at GET http://localhost:3000/api)
-router.get('/', (req, res) => {
-    res.json({ 
-        code: 200,
-        message: 'Welcome to bears api !',
-    });
-});
-
-
 /**
  * MAIN API URL 
  * http://localhost:3000/api
- */ 
+ */
 
- // API bears
+// API bears
 router.route('/bears')
     .post((req, res) => {
         // create a bear (accessed at POST http://localhost:3000/api/bears)
@@ -53,9 +50,9 @@ router.route('/bears')
         bear.save((err) => {
             if (err)
                 res.send(err);
-            res.json({ 
+            res.json({
                 code: 200,
-                message: 'Bear created!' 
+                message: 'Bear created!'
             });
         });
 
@@ -65,10 +62,10 @@ router.route('/bears')
         Bear.find((err, bears) => {
             if (err)
                 res.send(err);
-            res.json({ 
-                code: 200, 
+            res.json({
+                code: 200,
                 data: bears,
-                message: 'Bear get all!' 
+                message: 'Bear get all!'
             });
         });
     });
@@ -83,7 +80,7 @@ router.route('/bears/:bear_id')
             res.json({
                 code: 200,
                 data: bear,
-                message: 'Bear get by id '+req.params.bear_id 
+                message: 'Bear get by id ' + req.params.bear_id
             });
         });
     })
@@ -99,9 +96,9 @@ router.route('/bears/:bear_id')
             bear.save((err) => {
                 if (err)
                     res.send(err);
-                res.json({ 
+                res.json({
                     code: 200,
-                    message: 'Bear updated!' + req.params.bear_id 
+                    message: 'Bear updated!' + req.params.bear_id
                 });
             });
 
@@ -114,18 +111,54 @@ router.route('/bears/:bear_id')
         }, (err, bear) => {
             if (err)
                 res.send(err);
-            res.json({ 
+            res.json({
                 code: 200,
-                message: 'Successfully deleted' + req.params.bear_id 
+                message: 'Successfully deleted' + req.params.bear_id
             });
         });
     });
 // END API
 
 
+// test route to make sure everything is working (accessed at GET http://localhost:3000/api)
+router.get('/doc/api/v1', (req, res) => {
+    // res.json({ 
+    //     code: 200,
+    //     message: 'Welcome to bears api !',
+    // });
+    res.sendFile(__dirname + '/dist/index.html');
+});
+
+
 // REGISTER OUR ROUTES -------------------------------
 // all of our routes will be prefixed with /api
 app.use('/api', router);
+
+
+
+swagger.setApiInfo({
+    title: "Document API",
+    description: "enqtran API",
+    termsOfServiceUrl: "",
+    contact: "enqtran@gmail.com",
+    license: "",
+    licenseUrl: ""
+});
+
+// Set api-doc path
+swagger.configureSwaggerPaths('', 'api-docs', '');
+
+// Configure the API domain
+const domain = 'localhost';
+
+// Set and display the application URL
+const applicationUrl = 'http://' + domain + ':' + port;
+console.log('snapJob API running on ' + applicationUrl);
+
+
+swagger.configure(applicationUrl, '1.0.0');
+
+
 
 app.listen(port);
 console.log('Bear RESTful API server started on: ' + port);
