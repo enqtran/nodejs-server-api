@@ -11,7 +11,7 @@ const argv = require('minimist')(process.argv.slice(2));
 
 
 const app = express();
-const port = Number(process.env.PORT || 3000);
+const port = Number(process.env.PORT || 8000);
 
 mongoose.connect('mongodb://localhost/Tododb');
 
@@ -98,7 +98,7 @@ router.route('/bears/:bear_id')
                     res.send(err);
                 res.json({
                     code: 200,
-                    message: 'Bear updated!' + req.params.bear_id
+                    message: 'Bear updated! ' + req.params.bear_id
                 });
             });
 
@@ -113,7 +113,7 @@ router.route('/bears/:bear_id')
                 res.send(err);
             res.json({
                 code: 200,
-                message: 'Successfully deleted' + req.params.bear_id
+                message: 'Successfully deleted ' + req.params.bear_id
             });
         });
     });
@@ -157,8 +157,6 @@ console.log('snapJob API running on ' + applicationUrl);
 
 
 swagger.configure(applicationUrl, '1.0.0');
-
-
 
 app.listen(port);
 console.log('Bear RESTful API server started on: ' + port);

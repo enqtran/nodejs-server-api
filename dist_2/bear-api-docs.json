@@ -1,0 +1,299 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "ENQTRAN API DOCUMENTS - enqtran@gmail.com",
+        "version": "1.0.0",
+        "title": "ENQTRAN SWAGGER",
+        "termsOfService": "http://enqtran.com",
+        "contact":"",
+        "license": ""
+    },
+    "host": "localhost:8000",
+    "basePath": "/",
+    "tags": [
+        {
+            "name": "Bears",
+            "description": "Everything about your Bear"
+        }
+    ],
+    "schemes": [
+        "http",
+        "https"
+    ],
+    "consumes": [
+        "application/json"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "paths": {
+        "/api/bears": {
+            "post": {
+                "tags": [
+                    "Bears"
+                ],
+                "summary": "Add a new bear to the store",
+                "description": "Create bear",
+                "operationId": "createBear",
+                "consumes": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "produces": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "name for bear ",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/create_bear"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "create response result",
+                        "schema": {
+                            "$ref": "#/definitions/create_bear_response"
+                        }
+                    }
+                }
+            },
+            "get": {
+                "tags": [
+                    "Bears"
+                ],
+                "summary": "Get all bear",
+                "description": "Get all bear",
+                "operationId": "getAllBear",
+                "consumes": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "produces": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "get all bear response",
+                        "schema": {
+                            "$ref": "#/definitions/get_all_bear_response"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/bears/{bear_id}": {
+            "get": {
+                "tags": [
+                    "Bears"
+                ],
+                "summary": "Get a bear by id",
+                "description": "Get bear by id",
+                "operationId": "findById",
+                "consumes": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "produces": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "parameters": [
+                    {
+                        "name": "bear_id",
+                        "in": "path",
+                        "description": "bear_id bear",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "get by id response",
+                        "schema": {
+                            "$ref": "#/definitions/get_bear_by_id_response"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Bears"
+                ],
+                "summary": "Delete a bear by id",
+                "description": "Deletes a something",
+                "operationId": "delete",
+                "consumes": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "produces": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "parameters": [
+                    {
+                        "name": "bear_id",
+                        "in": "path",
+                        "description": "bear_id to delete",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "delete response",
+                        "schema": {
+                            "$ref": "#/definitions/delete_bear_by_id_response"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Bears"
+                ],
+                "summary": "Update a bear by id",
+                "description": "Update a bears",
+                "operationId": "updateBear",
+                "consumes": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "produces": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "parameters": [
+                    {
+                        "name": "bear_id",
+                        "in": "path",
+                        "description": "ID to delete",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "name",
+                        "in": "body",
+                        "description": "name update",
+                        "required": true,
+                        "type": "string",
+                        "schema": {
+                            "$ref": "#/definitions/put_bear_content"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Update Successfully"
+                    },
+                    "400": {
+                        "description": "Invalid ID supplied"
+                    },
+                    "404": {
+                        "description": "Bear not found"
+                    },
+                    "405": {
+                        "description": "Validation exception"
+                    }
+                }
+            }
+        }
+    },
+    "securityDefinitions": {
+        "petstore_auth": {
+            "type": "oauth2",
+            "authorizationUrl": "http://petstore.swagger.io/oauth/dialog",
+            "flow": "implicit",
+            "scopes": {
+                "write:pets": "modify pets in your account",
+                "read:pets": "read your pets"
+            }
+        },
+        "api_key": {
+            "type": "apiKey",
+            "name": "api_key",
+            "in": "header"
+        }
+    },
+    "definitions": {
+        "create_bear": {
+            "properties": {
+                "name": {
+                    "required": true,
+                    "type": "string",
+                    "example": "quytran"
+                }
+            }
+        },
+        "create_bear_response": {
+            "properties": {
+                "code": {
+                    "required": true,
+                    "type": "int64",
+                    "example": 200
+                }
+            }
+        },
+        "get_all_bear_response": {
+            "properties": {
+                "code": {
+                    "required": true,
+                    "type": "int64",
+                    "example": 200
+                }
+            }
+        },
+        "get_bear_by_id_response": {
+            "properties": {
+                "code": {
+                    "required": true,
+                    "type": "int64",
+                    "example": 200
+                }
+            }
+        },
+        "delete_bear_by_id_response": {
+            "properties": {
+                "status": {
+                    "required": true,
+                    "type": "string",
+                    "example": "deleted"
+                }
+            }
+        },
+        "put_bear_content": {
+            "properties": {
+                "name": {
+                    "required": true,
+                    "type": "string",
+                    "example": "quytran"
+                }
+            }
+        },
+        "put_bear_by_id_response": {
+            "properties": {
+                "status": {
+                    "required": true,
+                    "type": "string",
+                    "example": "updated"
+                }
+            }
+        },
+        "400error": {
+            "properties": {
+                "message": {
+                    "type": "string",
+                    "example": "400 Bad Request"
+                }
+            }
+        }
+    }
+}
