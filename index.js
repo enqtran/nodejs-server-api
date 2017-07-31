@@ -14,6 +14,7 @@ const app = express();
 const port = Number(process.env.PORT || 8000);
 
 mongoose.connect('mongodb://localhost/Tododb');
+// mongoose.connect('mongodb://<enqtran>:<anhlaquy@@>@ds127163.mlab.com:27163/bears');
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
